@@ -4,20 +4,40 @@ we write sql query to walk through a millions log records to generate a report
 about the data.
 
 ## How to run it
-this project use vagrant you cant find it [here](https://github.com/udacity/fullstack-nanodegree-vm).
-after set it up, login use `vagrant ssh` and import the data needed by `psql -d news -f newsdata.sql`
-I write my own view which is not in the database. before you run the program, use `psql -d news` to
-login the database, and run following sql code to import view
-```sql
--- view stat of a path
--- only success view (status is 200) and using GET is counted
-create view view_stat as
-select path, count(*) as view_cnt
-from log
-where status = '200 OK' and method = 'GET'
-group by path
+What you need
+* Vagrant
+* VirtualBox
+* Git
+
+Assume you have setup vagrant and virtualbox properly.
+
+You can import and login the vm used in this project by the following cmd
 ```
-after that you can run the program by `python2 main.py`
+git clone https://github.com/udacity/fullstack-nanodegree-vm fsnd-vm
+cd fsnd-vm/vagrant
+
+vagrant up
+vagrant ssh
+```
+
+In the vm use the following cmd to download the database file and import it
+```
+wget https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip
+unzip newsdata.zip
+psql -d news -f newsdata.sql
+```
+
+Download this project and import views needed
+```
+git clone https://github.com/akudet/fsnd-proj3.git
+cd fsnd-proj3
+psql -d news -f create_view.sql
+```
+
+Finally you can run the program by 
+```
+python2 main.py
+```
 
 ## Program Design
 this project seems pretty straight forward, I write a method for each question
